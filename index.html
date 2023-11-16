@@ -50,13 +50,24 @@
 </nav>
 
 <!-- submit stories form -->
-<form action="#" id="story-form" class="hidden" method="post">
-  <div class="story-input">
-    <label for="story-author">author
+<section class="container">
+  <form action="#" id="story-form" class="hidden" method="post">
+    <div class="story-input">
+      <label for="story-author">author</label>
       <input id="story-author" placeholder="author name" type="text">
-    </label>
-  </div>
-</form>
+    </div>
+    <div class="story-input">
+      <label for="story-title">title</label>
+        <input id="story-title" placeholder="story title" type="text">
+    </div>
+    <div class="story-input">
+      <label for="story-url">url</label>
+        <input id="story-url" placeholder="story url" type="text">
+    </div>
+    <button type="submit">submit</button>
+    <hr>
+  </form>
+</section>
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
