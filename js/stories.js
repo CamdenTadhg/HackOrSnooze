@@ -60,6 +60,10 @@ async function submitNewStory(event) {
   const username = currentUser.username
   const newStory = {author: author, title: title, url: url, username: username};
   await storyList.addStory(currentUser, newStory);
+  $("#story-author").val('');
+  $("#story-title").val('');
+  $("story-url").val('');
+  $newStoryForm.hide();
 }
 
 $newStoryForm.on("submit", submitNewStory);

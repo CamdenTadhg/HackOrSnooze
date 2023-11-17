@@ -87,9 +87,11 @@ class StoryList {
       url: `${BASE_URL}/stories`,
       data: {token: token, story: {author, title, url}}
     })
-    console.log(response);
     //make a story instance
+    const storyInstance = new Story(response.data.story);
     //add to story list
+    storyList.stories.unshift(storyInstance);
+    putStoriesOnPage();
     //return new story instance
     return storyInstance;
   }
