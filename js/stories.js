@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <span class="favorite"><i class="far fa-star"></i></span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -34,6 +35,8 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+
+
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -47,7 +50,6 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-
   $allStoriesList.show();
 }
 
@@ -67,3 +69,32 @@ async function submitNewStory(event) {
 }
 
 $newStoryForm.on("submit", submitNewStory);
+
+//use event delegation to add an event listener for favorites
+$allStoriesList.on('click', function(event){
+  if(event.target.classList.contains('far')){
+    console.log(event.currentTarget.firstChild.id);
+    addFavorite(event);
+  }
+  if (event.target.classList.contains('fas')){
+    removeFavorite(event);
+  }
+});
+
+function addFavorite(star){
+  //change open star to solid star
+  star.target.parentElement.innerHTML = '<i class="fas fa-star"></i>'
+  //get storyId from parent
+  const storyId = star.currentTarget.firstChild.id;
+  //run currentUser.favorite
+  currentUser.favorite(storyId);
+}
+
+function removeFavorite(star){
+  //change solid star to open star
+  star.target.parentElement.innerHTML = '<i class="far fa-star"></i>'
+  //get storyId from parent
+  const storyId = star.currentTarget.firstChild.id;
+  //run currentUser.unfavorite
+  currentUser.unfavorite(storyId);
+}

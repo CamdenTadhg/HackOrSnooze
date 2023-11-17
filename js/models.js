@@ -220,6 +220,7 @@ class User {
       method: "POST", 
       params: {token: this.loginToken}
     });
+    console.log(response);
   }
 
   //Method to remove an article from the favorites array
@@ -229,6 +230,6 @@ class User {
       method: "DELETE",
       params: {token: this.loginToken}
     });
-    console.log(response);
+    console.log(response)
   }
 }
