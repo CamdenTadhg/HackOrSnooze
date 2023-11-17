@@ -12,10 +12,12 @@ const $signupForm = $("#signup-form");
 
 const $newStoryForm = $("#story-form");
 
+const $navSubmit = $("#nav-submit");
+const $navFavorites = $("#nav-favs")
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
-const $navSubmit = $("#nav-submit");
+
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -53,11 +55,10 @@ console.warn("HEY STUDENT: This program sends many debug messages to" +
   " menu 'Default Levels' and add Verbose");
 $(start);
 
-//Creating new stories
-    //construct post request
-    //update page
+
 //Favorite stories
-  //Data/Api Changes
+  //favorites not being added correctly
+  //favorites appearing first in the results list
 //Removing stories
 //Styling
 //Add error handling for creating user and signing in
@@ -67,9 +68,8 @@ $(start);
 //Add user profile to change name and password
 //style for mobile devices
 //Add infinite scroll
-//add 3 additional features
-  //add comment functionality
-  //add time since post
-  //add sort by most favorites
+//add comment functionality
+//add time since post
+//add sort by most favorites
 
 

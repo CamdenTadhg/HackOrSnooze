@@ -2,6 +2,7 @@
 
 // This is the global list of the stories, an instance of StoryList
 let storyList;
+let favoritesList;
 
 /** Get and show stories when site first loads. */
 
@@ -23,17 +24,31 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
-  return $(`
-      <li id="${story.storyId}">
-        <span class="favorite"><i class="far fa-star"></i></span>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
+  if (currentUser.favorites.filter(e => e.storyId === story.storyId).length > 0){
+    return $(`
+    <li id="${story.storyId}">
+      <span class="favorite"><i class="fas fa-star"></i></span>
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+  } else {
+    return $(`
+        <li id="${story.storyId}">
+          <span class="favorite"><i class="far fa-star"></i></span>
+          <a href="${story.url}" target="a_blank" class="story-link">
+            ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+          <small class="story-author">by ${story.author}</small>
+          <small class="story-user">posted by ${story.username}</small>
+        </li>
+      `);
+  }
 }
 
 
@@ -73,7 +88,6 @@ $newStoryForm.on("submit", submitNewStory);
 //use event delegation to add an event listener for favorites
 $allStoriesList.on('click', function(event){
   if(event.target.classList.contains('far')){
-    console.log(event.currentTarget.firstChild.id);
     addFavorite(event);
   }
   if (event.target.classList.contains('fas')){
@@ -97,4 +111,31 @@ function removeFavorite(star){
   const storyId = star.currentTarget.firstChild.id;
   //run currentUser.unfavorite
   currentUser.unfavorite(storyId);
+}
+
+  //display favoritesList instance
+  async function showFavorites(){
+  favoritesList = await currentUser.getFavorites();
+  console.debug("showFavorites");
+  $allStoriesList.empty();
+  for (let favorite of favoritesList.stories)  {
+    const $story = generateFavoritesMarkup(favorite);
+    $allStoriesList.append($story);
+  }
+  $allStoriesList.show();
+}
+
+function generateFavoritesMarkup(story){
+  const hostName = story.getHostName();
+  return $(`
+  <li id="${story.storyId}">
+    <span class="favorite"><i class="fas fa-star"></i></span>
+    <a href="${story.url}" target="a_blank" class="story-link">
+      ${story.title}
+    </a>
+    <small class="story-hostname">(${hostName})</small>
+    <small class="story-author">by ${story.author}</small>
+    <small class="story-user">posted by ${story.username}</small>
+  </li>
+`);
 }

@@ -45,3 +45,10 @@ function navSubmitClick(event) {
 }
 
 $navSubmit.on("click", navSubmitClick);
+
+function navFavoritesClick(event){
+  console.debug("navFavoritesClick", event);
+  showFavorites();
+}
+
+$navFavorites.on("click", navFavoritesClick);
