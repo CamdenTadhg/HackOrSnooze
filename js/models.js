@@ -212,4 +212,23 @@ class User {
       return null;
     }
   }
+
+  // Method to add an article to your favorites array
+  async favorite(storyId){
+    const response = await axios ({
+      url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+      method: "POST", 
+      params: {token: this.loginToken}
+    });
+  }
+
+  //Method to remove an article from the favorites array
+  async unfavorite(storyId){
+    const response = await axios ({
+      url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+      method: "DELETE",
+      params: {token: this.loginToken}
+    });
+    console.log(response);
+  }
 }
