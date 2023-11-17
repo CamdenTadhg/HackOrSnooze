@@ -54,12 +54,8 @@ console.warn("HEY STUDENT: This program sends many debug messages to" +
 $(start);
 
 //Creating new stories
-  //sending story data to the backend API
-    //on click, display form
-    //gather data from form
     //construct post request
     //update page
-  //building the UI for new story form/add new story
 //Favorite stories
   //Data/Api Changes
 //Removing stories
