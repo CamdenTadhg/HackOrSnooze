@@ -13,7 +13,8 @@ const $signupForm = $("#signup-form");
 const $newStoryForm = $("#story-form");
 
 const $navSubmit = $("#nav-submit");
-const $navFavorites = $("#nav-favs")
+const $navFavorites = $("#nav-favs");
+const $navMyStories = $('#nav-stories');
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
@@ -56,9 +57,10 @@ console.warn("HEY STUDENT: This program sends many debug messages to" +
 $(start);
 
 
+//adding new stories
+  //displaying my stories
 //Favorite stories
-  //favorites not being added correctly
-  //favorites appearing first in the results list
+  //favorites not being added or removed correctly
 //Removing stories
 //Styling
 //Add error handling for creating user and signing in

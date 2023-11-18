@@ -238,12 +238,21 @@ class User {
   async getFavorites(){
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
-      METHOD: "GET", 
+      method: "GET", 
       params: {token: this.loginToken}
     });
     const favorites = response.data.user.favorites.map(story => new Story(story));
-    console.log("favorites is")
-    console.log(favorites);
     return new StoryList(favorites);
+  }
+
+  async getMyStories(){
+    const response = await axios ({
+      url: `${BASE_URL}/users/${this.username}`,
+      method: "GET",
+      params: {token: this.loginToken}
+    })
+    console.log(response);
+    const myStories = response.data.user.stories.map(story => new Story(story));
+    return new StoryList(myStories);
   }
 }

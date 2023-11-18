@@ -3,6 +3,7 @@
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 let favoritesList;
+let myStoriesList;
 
 /** Get and show stories when site first loads. */
 
@@ -68,7 +69,7 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-
+//using the submit form to submit a new story. 
 async function submitNewStory(event) {
   event.preventDefault();
   const author = $("#story-author").val();
@@ -77,9 +78,10 @@ async function submitNewStory(event) {
   const username = currentUser.username
   const newStory = {author: author, title: title, url: url, username: username};
   await storyList.addStory(currentUser, newStory);
+  putStoriesOnPage();
   $("#story-author").val('');
   $("#story-title").val('');
-  $("story-url").val('');
+  $("#story-url").val('');
   $newStoryForm.hide();
 }
 
@@ -138,4 +140,16 @@ function generateFavoritesMarkup(story){
     <small class="story-user">posted by ${story.username}</small>
   </li>
 `);
+}
+
+async function showMyStories(){
+  myStoriesList = await currentUser.getMyStories();
+  console.debug("showMyStories");
+  $allStoriesList.empty();
+  console.log(myStoriesList);
+  for (let story of myStoriesList.stories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+  $allStoriesList.show();
 }

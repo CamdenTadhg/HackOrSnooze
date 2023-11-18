@@ -52,3 +52,10 @@ function navFavoritesClick(event){
 }
 
 $navFavorites.on("click", navFavoritesClick);
+
+function navMyStoriesClick(event){
+  console.debug("navMyStoriesClick", event);
+  showMyStories();
+}
+
+$navMyStories.on("click", navMyStoriesClick);
