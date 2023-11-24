@@ -14,6 +14,8 @@ async function getAndShowStoriesOnStart() {
   putStoriesOnPage();
 }
 
+
+
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
@@ -22,33 +24,35 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
-
   const hostName = story.getHostName();
-  if (currentUser.favorites.filter(e => e.storyId === story.storyId).length > 0){
-    return $(`
-    <li id="${story.storyId}">
-      <span class="favorite"><i class="fas fa-star"></i></span>
-      <a href="${story.url}" target="a_blank" class="story-link">
-        ${story.title}
-      </a>
-      <small class="story-hostname">(${hostName})</small>
-      <small class="story-author">by ${story.author}</small>
-      <small class="story-user">posted by ${story.username}</small>
-    </li>
-  `);
+  const star = getStar(story);
+  return $(`
+  <li id="${story.storyId}">
+    <container class="story-container">
+    ${star}
+    <div class="two">
+    <a href="${story.url}" target="a_blank" class="story-link">
+      ${story.title}
+    </a>
+    <small class="story-hostname">(${hostName})</small>
+    <span class="story-author">by ${story.author}</span>
+    <span class="story-user">posted by ${story.username}</span>
+    </div>
+    </container>
+    <hr>
+  </li>
+`);
+}
+
+
+function getStar(story) {
+  if (currentUser === undefined){
+    return '<span class="favorite one"><i class="far fa-star"></i></span>';
+  }
+  else if (currentUser.favorites.filter(e => e.storyId === story.storyId).length > 0 ) {
+    return "<span class='favorite one'><i class='fas fa-star'></i></span>";
   } else {
-    return $(`
-        <li id="${story.storyId}">
-          <span class="favorite"><i class="far fa-star"></i></span>
-          <a href="${story.url}" target="a_blank" class="story-link">
-            ${story.title}
-          </a>
-          <small class="story-hostname">(${hostName})</small>
-          <small class="story-author">by ${story.author}</small>
-          <small class="story-user">posted by ${story.username}</small>
-        </li>
-      `);
+    return '<span class="favorite one"><i class="far fa-star"></i></span>';
   }
 }
 
@@ -57,8 +61,6 @@ function generateStoryMarkup(story) {
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
-  console.debug("putStoriesOnPage");
-
   $allStoriesList.empty();
 
   // loop through all of our stories and generate HTML for them
@@ -87,30 +89,37 @@ async function submitNewStory(event) {
 
 $newStoryForm.on("submit", submitNewStory);
 
-//use event delegation to add an event listener for favorites
+//use event delegation to add an event listener for favorites & deleting
 $allStoriesList.on('click', function(event){
-  if(event.target.classList.contains('far')){
+  if(currentUser === undefined) {
+    return;
+  }
+  if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
     addFavorite(event);
   }
-  if (event.target.classList.contains('fas')){
+  if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
     removeFavorite(event);
+  }
+  if (event.target.classList.contains('fa-trash-alt')){
+    console.log(event.target.parentElement.parentElement.id);
+    currentUser.deleteStory(event.target.parentElement.parentElement.id);
   }
 });
 
-function addFavorite(star){
-  //change open star to solid star
-  star.target.parentElement.innerHTML = '<i class="fas fa-star"></i>'
+function addFavorite(event){
   //get storyId from parent
-  const storyId = star.currentTarget.firstChild.id;
+  const storyId = event.target.parentElement.parentElement.id;
+  //change open star to solid star
+  event.target.parentElement.innerHTML = '<i class="fas fa-star"></i>'
   //run currentUser.favorite
   currentUser.favorite(storyId);
 }
 
-function removeFavorite(star){
-  //change solid star to open star
-  star.target.parentElement.innerHTML = '<i class="far fa-star"></i>'
+function removeFavorite(event){
   //get storyId from parent
-  const storyId = star.currentTarget.firstChild.id;
+  const storyId = event.target.parentElement.parentElement.id;
+    //change solid star to open star
+  event.target.parentElement.innerHTML = '<i class="far fa-star"></i>'
   //run currentUser.unfavorite
   currentUser.unfavorite(storyId);
 }
@@ -118,7 +127,6 @@ function removeFavorite(star){
   //display favoritesList instance
   async function showFavorites(){
   favoritesList = await currentUser.getFavorites();
-  console.debug("showFavorites");
   $allStoriesList.empty();
   for (let favorite of favoritesList.stories)  {
     const $story = generateFavoritesMarkup(favorite);
@@ -131,24 +139,52 @@ function generateFavoritesMarkup(story){
   const hostName = story.getHostName();
   return $(`
   <li id="${story.storyId}">
+    <container class="story-container>
     <span class="favorite"><i class="fas fa-star"></i></span>
+    <div class="two">
     <a href="${story.url}" target="a_blank" class="story-link">
       ${story.title}
     </a>
     <small class="story-hostname">(${hostName})</small>
-    <small class="story-author">by ${story.author}</small>
-    <small class="story-user">posted by ${story.username}</small>
+    <span class="story-author">by ${story.author}</span>
+    <span class="story-user">posted by ${story.username}</span>
+    </div>
+    </container>
+    <hr>
   </li>
 `);
 }
 
+function generateMyStoriesMarkup(story){
+  const hostName = story.getHostName();
+  const star = getStar(story);
+  return $(`
+    <li id="${story.storyId}">
+      <container class="my-story-container">
+      <div class="one">
+        <span class="delete"><i class="fas fa-trash-alt"></i></span>
+        <span class="edit"><i class="fas fa-pencil-alt"></i></span>
+        ${star}
+      </div>
+      <div class="two">
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <span class="story-author">by ${story.author}</span>
+      <span class="story-user">posted by ${story.username}</span>
+      </div>
+      </container>
+      <hr>
+    </li>
+  `);
+}
+
 async function showMyStories(){
   myStoriesList = await currentUser.getMyStories();
-  console.debug("showMyStories");
   $allStoriesList.empty();
-  console.log(myStoriesList);
   for (let story of myStoriesList.stories) {
-    const $story = generateStoryMarkup(story);
+    const $story = generateMyStoriesMarkup(story);
     $allStoriesList.append($story);
   }
   $allStoriesList.show();

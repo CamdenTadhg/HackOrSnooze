@@ -12,6 +12,7 @@ const $signupForm = $("#signup-form");
 
 const $newStoryForm = $("#story-form");
 
+const $navHome = $('#navbar-brand');
 const $navSubmit = $("#nav-submit");
 const $navFavorites = $("#nav-favs");
 const $navMyStories = $('#nav-stories');
@@ -30,7 +31,7 @@ function hidePageComponents() {
     $allStoriesList,
     $loginForm,
     $signupForm,
-    $newStoryForm
+    $newStoryForm,
   ];
   components.forEach(c => c.hide());
 }
@@ -38,40 +39,37 @@ function hidePageComponents() {
 /** Overall function to kick off the app. */
 
 async function start() {
-  console.debug("start");
 
   // "Remember logged-in user" and log in, if credentials in localStorage
   await checkForRememberedUser();
+    //if we don't have a logged-in user, hide certain components
+    if (currentUser) {
+      $navSubmit.show();
+      $navFavorites.show();
+      $navMyStories.show();
+    }
   await getAndShowStoriesOnStart();
 
   // if we got a logged-in user
   if (currentUser) updateUIOnUserLogin();
+
+
 }
 
 // Once the DOM is entirely loaded, begin the app
-
-console.warn("HEY STUDENT: This program sends many debug messages to" +
-  " the console. If you don't see the message 'start' below this, you're not" +
-  " seeing those helpful debug messages. In your browser console, click on" +
-  " menu 'Default Levels' and add Verbose");
 $(start);
 
 
-//adding new stories
-  //displaying my stories
-//Favorite stories
-  //favorites not being added or removed correctly
-//Removing stories
-//Styling
-//Add error handling for creating user and signing in
-  //user name is taken
-  //credentials are incorrect
+
+
 //Allow editing stories created by user
+  //need something to click for editing
+  //send request to edit story
+  //update story in user interface
 //Add user profile to change name and password
 //style for mobile devices
 //Add infinite scroll
-//add comment functionality
 //add time since post
+//make the host name a link
+//clicking on user name gives you a list of the user's stories
 //add sort by most favorites
-
-

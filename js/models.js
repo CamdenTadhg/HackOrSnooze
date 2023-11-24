@@ -58,17 +58,13 @@ class StoryList {
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
     //  instance method?
-
     // query the /stories endpoint (no auth required)
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "GET",
     });
-
     // turn plain old story objects from API into instances of Story class
     const stories = response.data.stories.map(story => new Story(story));
-    console.log('stories is');
-    console.log(stories);
 
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
@@ -142,8 +138,14 @@ class User {
       url: `${BASE_URL}/signup`,
       method: "POST",
       data: { user: { username, password, name } },
+    }).catch(function(error){
+      if (error.response.status === 409){
+        //error handling for existing username
+        const $username = $('.signup-username');
+        const $errormessage = $("<span class='error'>User name is taken. Please try again.</span>");
+        $username.append($errormessage);
+      }
     });
-
     let { user } = response.data
 
     return new User(
@@ -169,6 +171,19 @@ class User {
       url: `${BASE_URL}/login`,
       method: "POST",
       data: { user: { username, password } },
+    }).catch(function(error){
+      //error handling for incorrect username and incorrect password
+      if (error.response.status === 404){
+        const $username = $('.login-username');
+        const $errormessage = $('<span class="error">User name does not exist. Please try again.</span>')
+        $username.append($errormessage);
+      }
+      if (error.response.status === 401){
+        const $password = $('.login-password');
+        const $errormessage = $('<span class="error">Password is incorrect. Please try again.</span>');
+        $password.append($errormessage);
+      
+      }
     });
 
     let { user } = response.data;
@@ -222,7 +237,7 @@ class User {
       method: "POST", 
       params: {token: this.loginToken}
     });
-    console.log(response);
+    await currentUser.getFavorites();
   }
 
   //Method to remove an article from the favorites array
@@ -232,6 +247,7 @@ class User {
       method: "DELETE",
       params: {token: this.loginToken}
     });
+    await currentUser.getFavorites();
   }
 
   //create instance of StoryList from favorites array
@@ -241,18 +257,29 @@ class User {
       method: "GET", 
       params: {token: this.loginToken}
     });
-    const favorites = response.data.user.favorites.map(story => new Story(story));
-    return new StoryList(favorites);
+    this.favorites = response.data.user.favorites.map(story => new Story(story));
+    return new StoryList(this.favorites);
   }
 
+  //method to retrieve stories associated with a user account
   async getMyStories(){
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "GET",
       params: {token: this.loginToken}
     })
-    console.log(response);
-    const myStories = response.data.user.stories.map(story => new Story(story));
-    return new StoryList(myStories);
+    this.ownStories = response.data.user.stories.map(story => new Story(story));
+    return new StoryList(this.ownStories);
+  }
+
+//method to delete a story added by the user
+  async deleteStory(storyId){
+    const response = await axios ({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      params: {token: this.loginToken}
+    })
+    storyList = await StoryList.getStories();
+    showMyStories();
   }
 }

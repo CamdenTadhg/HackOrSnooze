@@ -2,10 +2,11 @@
 
 nav {
   display: flex;
-  background-color: #ff6600;
+  background-color: #D72483;
   align-items: center;
-  padding: 5px 20px;
+  padding: 30px 20px;
   border-radius: 3px 3px 0 0;
+  color: white;
 }
 
 .navbar-brand {
@@ -23,7 +24,7 @@ nav {
 }
 
 #nav-submit, #nav-favs, #nav-stories{
-  border-left: solid black 1px;
+  border-left: solid white 1px;
   padding: 0px 0px 0px 10px;
   text-align: center;
 }

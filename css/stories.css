@@ -5,7 +5,7 @@
 }
 
 .stories-list > li {
-  color: gray;
+  color: #2F2D2E;
   font-size: 0.8rem;
   margin: 10px 0;
 }
@@ -22,8 +22,8 @@
 .story-link {
   color: black;
   font-size: 0.85rem;
-  font-weight: normal;
-  margin: 18px 0;
+  font-weight: bold;
+  margin: 7px 0;
 }
 
 .story-link:hover {
@@ -31,13 +31,35 @@
 }
 
 .story-author {
-  margin-left: 2em;
+  display: block;
+  margin: 7px 0px;
+  color: #792359;
 }
 
 .story-user {
   display: block;
+  margin: 7px 0px;
+  color: #0496FF;
 }
 
-.favorite {
+.favorite, .delete, .edit {
   cursor: pointer;
+}
+
+.story-container {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+}
+
+.my-story-container{
+  display: grid;
+  grid-template-columns: 60px 1fr;
+}
+
+.one {
+  grid-column: 1 / 2;
+}
+
+.two {
+  grid-column: 2 / 2;
 }

@@ -3,7 +3,11 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 8px 7.5vw;
+  background: rgb(119,201,248);
+  background: radial-gradient(circle, rgba(119,201,248,1) 0%, rgba(233,255,173,1) 100%);
 }
+
+
 
 h1 {
   font-size: 1.1rem;
@@ -37,7 +41,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-self: center;
-  background-color: #f6f6ef;
+  background-color: #EAEAEA;
 }
 
 .hidden {

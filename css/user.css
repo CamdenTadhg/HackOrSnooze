@@ -12,3 +12,9 @@
 .account-forms-container {
   padding-left: 20px;
 }
+
+.error {
+  color: red;
+  margin: 0px 10px;
+  font-weight: bolder;
+}
