@@ -10,11 +10,34 @@
 }
 
 .account-forms-container {
-  padding-left: 20px;
+  padding: 20px;
 }
 
 .error {
   color: red;
   margin: 0px 10px;
   font-weight: bolder;
+}
+
+.profile {
+  font-size: 0.9rem;
+  display: block;
+  line-height: 30px;
+}
+
+#change-name, #change-password {
+  font-weight: normal;
+  color: red;
+  text-decoration:underline;
+  margin-left: 15px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#profile-name, #profile-password {
+  display: inline;
+}
+
+#change-name-form, #change-password-form {
+  margin-left: 10px;
 }

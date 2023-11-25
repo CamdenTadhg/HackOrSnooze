@@ -40,20 +40,29 @@ function updateNavOnLogin() {
 
 // show new story form on click on "submit"
 
-function navSubmitClick(event) {
+function navSubmitClick() {
   $newStoryForm.show();
 }
 
 $navSubmit.on("click", navSubmitClick);
 
-function navFavoritesClick(event){
+function navFavoritesClick(){
   showFavorites();
 }
 
 $navFavorites.on("click", navFavoritesClick);
 
-function navMyStoriesClick(event){
+function navMyStoriesClick(){
   showMyStories();
 }
 
 $navMyStories.on("click", navMyStoriesClick);
+
+function navUserProfileClick(){
+  //when the user clicks on the username, show a profile page
+  $allStoriesList.hide();
+  $userProfile.show();
+  fillUserProfile();
+}
+
+$navUserProfile.on("click", navUserProfileClick);

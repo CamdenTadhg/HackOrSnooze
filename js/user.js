@@ -16,6 +16,12 @@ async function login(evt) {
   const username = $("#login-username").val();
   const password = $("#login-password").val();
 
+  //clear existing error messages
+  if ($('.error')){
+    const $error = $('.error');
+    $error.remove();
+  }
+
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
@@ -36,6 +42,12 @@ async function signup(evt) {
   const name = $("#signup-name").val();
   const username = $("#signup-username").val();
   const password = $("#signup-password").val();
+
+    //clear existing error messages
+    if ($('.error')){
+      const $error = $('.error');
+      $error.remove();
+    }
 
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
@@ -100,12 +112,50 @@ function saveUserCredentialsInLocalStorage() {
  * - show the stories list
  * - update nav bar options for logged-in user
  * - generate the user profile part of the page
+ * - allow them to change their name and password
  */
 
 function updateUIOnUserLogin() {
-
   $allStoriesList.show();
-
-
   updateNavOnLogin();
 }
+
+function fillUserProfile() {
+  //fill user profile page with currentUser information
+  $profileUsername.text('Username: ' + currentUser.username);
+  $profileName.html('Name: ' + currentUser.name);
+  const date = new Date(currentUser.createdAt)
+  $profileCreated.text(`Account Created: ${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`);
+}
+
+async function changeName() {
+    //clicking on change links opens a text input to change and a button to submit
+  console.log('entering changeName')
+  const $changeNameForm = $('<input id="change-name-form" type="text" placeholder="name"><button id="change-name-button">Change</button>')
+  $profileName.append($changeNameForm);
+  const $changeNameButton = $('#change-name-button');
+  //clicking the button submits the new data to the database
+  $changeNameButton.on('click', function(){
+    const newName = $('#change-name-form').val();
+    currentUser.patchName(newName);
+    //current instance and profile page update to new name
+    currentUser.name = newName
+    $profileName.html('Name: '+ currentUser.name);
+  })
+}
+
+async function changePassword() {
+    //clicking on change links opens a text input to change and a button to submit
+  console.log('entering changePassword')
+  const $changePasswordForm = $('<input id="change-password-form" type="password" placeholder="password"><button id="change-password-button">Change</button>');
+  $profilePassword.append($changePasswordForm);
+  const $changePasswordButton = $('#change-password-button');
+  //clicking the button submits the new data to the database
+  $changePasswordButton.on('click', function(){
+    const newPassword = $('#change-password-form').val();
+    currentUser.patchPassword(newPassword);
+  })
+}
+
+$changeName.on('click', changeName);
+$changePassword.on("click", changePassword);

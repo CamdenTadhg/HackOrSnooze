@@ -12,6 +12,7 @@ const $signupForm = $("#signup-form");
 
 const $newStoryForm = $("#story-form");
 const $editStoryForm = $("#story-edit");
+const $userProfile = $("#user-profile");
 
 const $navHome = $('#navbar-brand');
 const $navSubmit = $("#nav-submit");
@@ -20,6 +21,13 @@ const $navMyStories = $('#nav-stories');
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
+
+const $profileName = $('#profile-name');
+const $profileUsername = $('#profile-username');
+const $profilePassword = $('#profile-password');
+const $profileCreated = $('#profile-created');
+const $changeName = $('#change-name');
+const $changePassword = $('#change-password');
 
 
 /** To make it easier for individual components to show just themselves, this
@@ -60,11 +68,29 @@ async function start() {
 // Once the DOM is entirely loaded, begin the app
 $(start);
 
-//make my stories and favorites show the most recent first. 
-//Add user profile to change name and password
-//style for mobile devices
+
 //Add infinite scroll
+  //when you scroll to the bottom of the page
+  //counter++
+  //send get request for 25 more stories using the counter as an offset/pagination
 //allow closing submit form and edit form without filling them out
+  //add cancel button
+  //on click of cancel button, hide form
 //add time since post
+  //use post time to calculate time since post
+  //add time since post to story object
+  //add time since post to markup
 //make the host name a link of stories from that host
+  //when click on host name
+  //save host name as a variable
+  //get stories with a higher associated limit
+  //use if statement to only display stories with the correct host
+  //ensure infinite scroll continues process
 //clicking on user name gives you a list of the user's stories
+  //when click user name
+  //save user name as a variable
+  //get stories with a higher associated limit
+  //use if statement to only display stories with the correct host
+  //ensure infinite scroll continues process
+//style for mobile devices
+  //make home stories list appear like favorites and mystories lists

@@ -182,7 +182,6 @@ class User {
         const $password = $('.login-password');
         const $errormessage = $('<span class="error">Password is incorrect. Please try again.</span>');
         $password.append($errormessage);
-      
       }
     });
 
@@ -287,19 +286,29 @@ class User {
 
 //method to edit a story added by the user
   async edit(storyId, storyData){
-    console.log('entering edit');
-    console.log(this.loginToken);
     const response = await axios ({
       url: `${BASE_URL}/stories/${storyId}`,
       method: "PATCH",
       data: {token: this.loginToken, story: storyData}
     })
+  }
+
+//method to edit user's name
+  async patchName(name){
+    const response = await axios ({
+      url: `${BASE_URL}/users/${this.username}`,
+      method: "PATCH", 
+      data: {token: this.loginToken, user: {name: name, password: this.password, username: this.username}}
+    })
+  }
+
+//method to edit user's password
+  async patchPassword(password) {
+    const response = await axios ({
+      url: `${BASE_URL}/users/${this.username}`,
+      method: "PATCH",
+      data: {token: this.loginToken, user: {name: this.name, password: password, username: this.username}}
+    })
     console.log(response);
   }
 }
-
-// const response = await axios({
-//   method: "POST",
-//   url: `${BASE_URL}/stories`,
-//   data: {token: token, story: {author, title, url}}
-// })

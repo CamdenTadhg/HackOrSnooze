@@ -138,7 +138,7 @@ function removeFavorite(event){
   $allStoriesList.empty();
   for (let favorite of favoritesList.stories)  {
     const $story = generateFavoritesMarkup(favorite);
-    $allStoriesList.append($story);
+    $allStoriesList.prepend($story);
   }
   $allStoriesList.show();
 }
@@ -193,7 +193,7 @@ async function showMyStories(){
   $allStoriesList.empty();
   for (let story of myStoriesList.stories) {
     const $story = generateMyStoriesMarkup(story);
-    $allStoriesList.append($story);
+    $allStoriesList.prepend($story);
   }
   $allStoriesList.show();
 }
@@ -201,7 +201,6 @@ async function showMyStories(){
 let editStory 
 
 async function editStoryForm(storyId){
-  console.log('entering editStory');
   //open an edit form
   $editStoryForm.show();
   //pull the story from the database
@@ -218,14 +217,12 @@ async function editStoryForm(storyId){
 
 async function submitEditForm(event){
   //allow user to edit the data
-  console.log('entering submit edit form')
   event.preventDefault();
   const author = $('#edit-author').val();
   const title = $('#edit-title').val();
   const url = $('#edit-url').val();
   const storyId = editStory.storyId;
   const storyData = {author: author, title: title, url: url};
-  console.log(storyData);
   //submit the new data 
   await currentUser.edit(storyId, storyData);
   //clear and hide the form
