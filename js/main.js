@@ -11,6 +11,7 @@ const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
 
 const $newStoryForm = $("#story-form");
+const $editStoryForm = $("#story-edit");
 
 const $navHome = $('#navbar-brand');
 const $navSubmit = $("#nav-submit");
@@ -63,13 +64,16 @@ $(start);
 
 
 //Allow editing stories created by user
-  //need something to click for editing
-  //send request to edit story
-  //update story in user interface
+  //when the user clicks on the edit icon
+  //an edit form opens
+  //and fills with the requisite data
+  //which can then be edited by the user
+  //and they can hit submit which will send the data to the update story link via axios
+  //the my stories page will change to the correct information
+  //the main stories page will also change to the correct information
 //Add user profile to change name and password
 //style for mobile devices
 //Add infinite scroll
 //add time since post
-//make the host name a link
+//make the host name a link of stories from that host
 //clicking on user name gives you a list of the user's stories
-//add sort by most favorites

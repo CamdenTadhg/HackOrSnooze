@@ -95,20 +95,24 @@ $allStoriesList.on('click', function(event){
     return;
   }
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    console.log('entering click favorite');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
     removeFavorite(event);
   }
   if (event.target.classList.contains('fa-trash-alt')){
-    console.log(event.target.parentElement.parentElement.id);
     currentUser.deleteStory(event.target.parentElement.parentElement.id);
+  }
+  if (event.target.classList.contains('fa-pencil-alt')){
+    editStory(event);
   }
 });
 
 function addFavorite(event){
+  console.log('entering addFavorite');
   //get storyId from parent
-  const storyId = event.target.parentElement.parentElement.id;
+  const storyId = event.target.parentElement.parentElement.parentElement.id;
   //change open star to solid star
   event.target.parentElement.innerHTML = '<i class="fas fa-star"></i>'
   //run currentUser.favorite
@@ -117,7 +121,7 @@ function addFavorite(event){
 
 function removeFavorite(event){
   //get storyId from parent
-  const storyId = event.target.parentElement.parentElement.id;
+  const storyId = event.target.parentElement.parentElement.parentElement.id;
     //change solid star to open star
   event.target.parentElement.innerHTML = '<i class="far fa-star"></i>'
   //run currentUser.unfavorite
@@ -189,3 +193,7 @@ async function showMyStories(){
   }
   $allStoriesList.show();
 }
+
+// async function editStory(event){
+  
+// }

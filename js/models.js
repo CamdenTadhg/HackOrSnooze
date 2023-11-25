@@ -232,6 +232,7 @@ class User {
 
   // Method to add an article to your favorites array
   async favorite(storyId){
+    console.log('entering favorite');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
       method: "POST", 
@@ -252,6 +253,7 @@ class User {
 
   //create instance of StoryList from favorites array
   async getFavorites(){
+    console.log('entering getFavorites');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "GET", 
@@ -282,4 +284,9 @@ class User {
     storyList = await StoryList.getStories();
     showMyStories();
   }
+
+//method to edit a story added by the user
+// async edit(storyId){
+
+// }
 }
