@@ -102,10 +102,14 @@ $allStoriesList.on('click', function(event){
     removeFavorite(event);
   }
   if (event.target.classList.contains('fa-trash-alt')){
-    currentUser.deleteStory(event.target.parentElement.parentElement.id);
+    let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    currentUser.deleteStory(storyId);
   }
   if (event.target.classList.contains('fa-pencil-alt')){
-    editStory(event);
+    console.log('edit click registered');
+    let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    console.log(storyId);
+    editStoryForm(storyId);
   }
 });
 
@@ -143,8 +147,8 @@ function generateFavoritesMarkup(story){
   const hostName = story.getHostName();
   return $(`
   <li id="${story.storyId}">
-    <container class="story-container>
-    <span class="favorite"><i class="fas fa-star"></i></span>
+    <container class="story-container">
+    <span class="favorite one"><i class="fas fa-star"></i></span>
     <div class="two">
     <a href="${story.url}" target="a_blank" class="story-link">
       ${story.title}
@@ -194,6 +198,44 @@ async function showMyStories(){
   $allStoriesList.show();
 }
 
-// async function editStory(event){
-  
-// }
+let editStory 
+
+async function editStoryForm(storyId){
+  console.log('entering editStory');
+  //open an edit form
+  $editStoryForm.show();
+  //pull the story from the database
+  const response = await axios ({
+    url: `${BASE_URL}/stories/${storyId}`,
+    method: "GET"
+  })
+  editStory = new Story(response.data.story);
+  //and fill in the requisite data
+  $('#edit-author').val(editStory.author);
+  $('#edit-title').val(editStory.title);
+  $('#edit-url').val(editStory.url);
+}
+
+async function submitEditForm(event){
+  //allow user to edit the data
+  console.log('entering submit edit form')
+  event.preventDefault();
+  const author = $('#edit-author').val();
+  const title = $('#edit-title').val();
+  const url = $('#edit-url').val();
+  const storyId = editStory.storyId;
+  const storyData = {author: author, title: title, url: url};
+  console.log(storyData);
+  //submit the new data 
+  await currentUser.edit(storyId, storyData);
+  //clear and hide the form
+  $("#edit-author").val('');
+  $('#edit-title').val('');
+  $('#edit-url').val('');
+  $editStoryForm.hide();
+  //my stories list changes to updated information
+  storyList = await StoryList.getStories();
+  showMyStories();
+}
+
+$editStoryForm.on("submit", submitEditForm);

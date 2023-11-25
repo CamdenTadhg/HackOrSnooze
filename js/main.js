@@ -60,20 +60,11 @@ async function start() {
 // Once the DOM is entirely loaded, begin the app
 $(start);
 
-
-
-
-//Allow editing stories created by user
-  //when the user clicks on the edit icon
-  //an edit form opens
-  //and fills with the requisite data
-  //which can then be edited by the user
-  //and they can hit submit which will send the data to the update story link via axios
-  //the my stories page will change to the correct information
-  //the main stories page will also change to the correct information
+//make my stories and favorites show the most recent first. 
 //Add user profile to change name and password
 //style for mobile devices
 //Add infinite scroll
+//allow closing submit form and edit form without filling them out
 //add time since post
 //make the host name a link of stories from that host
 //clicking on user name gives you a list of the user's stories

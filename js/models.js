@@ -286,7 +286,20 @@ class User {
   }
 
 //method to edit a story added by the user
-// async edit(storyId){
-
-// }
+  async edit(storyId, storyData){
+    console.log('entering edit');
+    console.log(this.loginToken);
+    const response = await axios ({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "PATCH",
+      data: {token: this.loginToken, story: storyData}
+    })
+    console.log(response);
+  }
 }
+
+// const response = await axios({
+//   method: "POST",
+//   url: `${BASE_URL}/stories`,
+//   data: {token: token, story: {author, title, url}}
+// })

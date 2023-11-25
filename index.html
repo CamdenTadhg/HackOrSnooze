@@ -65,6 +65,26 @@
   </form>
 </section>
 
+<!-- edit stories form -->
+<section class="container">
+  <form action="#" id="story-edit" class="hidden" method="post">
+    <div class="story-input">
+      <label for="edit-author">author</label>
+      <input id="edit-author" placeholder="author name" type="text">
+    </div>
+    <div class="story-input">
+      <label for="edit-title">title</label>
+        <input id="edit-title" placeholder="story title" type="text">
+    </div>
+    <div class="story-input">
+      <label for="edit-url">url</label>
+        <input id="edit-url" placeholder="story url" type="text">
+    </div>
+    <button type="submit">submit</button>
+    <hr>
+  </form>
+</section>
+
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
 
@@ -116,6 +136,8 @@
     <button type="submit">create account</button>
   </form>
 </section>
+
+
 
 <!-- Library JS & our JS -->
 <script src="https://unpkg.com/jquery"></script>
