@@ -71,7 +71,6 @@ class StoryList {
   }
 
   static async getMoreStories() {
-    console.log('entering getMoreStories')
     const response = await axios({
       url: `${BASE_URL}/stories?skip=${offsetCounter}`,
       method: "GET"

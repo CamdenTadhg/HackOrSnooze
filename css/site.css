@@ -110,6 +110,14 @@ form > hr {
   width: 70px;
 }
 
+.close {
+  position: absolute;
+  font-size: 3rem;
+  line-height: 2rem;
+  right: 21%;
+  cursor: pointer;
+}
+
 
 /* responsive queries for tightening things up for mobile. */
 

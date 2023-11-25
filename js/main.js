@@ -13,6 +13,7 @@ const $signupForm = $("#signup-form");
 const $newStoryForm = $("#story-form");
 const $editStoryForm = $("#story-edit");
 const $userProfile = $("#user-profile");
+const $close = $('.close');
 
 const $navHome = $('#navbar-brand');
 const $navSubmit = $("#nav-submit");
@@ -69,28 +70,25 @@ async function start() {
 $(start);
 
 
-//Add infinite scroll
-  //when you scroll to the bottom of the page
-  //counter++
-  //send get request for 25 more stories using the counter as an offset/pagination
-//allow closing submit form and edit form without filling them out
+//6. allow closing submit form and edit form without filling them out
   //add cancel button
   //on click of cancel button, hide form
-//add time since post
+//5. add time since post
   //use post time to calculate time since post
   //add time since post to story object
   //add time since post to markup
-//make the host name a link of stories from that host
+//4. make the host name a link of stories from that host
   //when click on host name
   //save host name as a variable
   //get stories with a higher associated limit
   //use if statement to only display stories with the correct host
   //ensure infinite scroll continues process
-//clicking on user name gives you a list of the user's stories
+//3. clicking on user name gives you a list of the user's stories
   //when click user name
   //save user name as a variable
   //get stories with a higher associated limit
   //use if statement to only display stories with the correct host
   //ensure infinite scroll continues process
-//style for mobile devices
+//2. style for mobile devices
   //make home stories list appear like favorites and mystories lists
+//1. readMe

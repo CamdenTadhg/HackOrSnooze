@@ -74,7 +74,6 @@ function putStoriesOnPage() {
 
 //appends additional stories from infinite scroll function
 function putMoreStoriesOnPage(newStories) {
-  console.log('entering putMoreStoriesOnPage');
   for (let story of newStories.stories) {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
@@ -105,7 +104,6 @@ $allStoriesList.on('click', function(event){
     return;
   }
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
-    console.log('entering click favorite');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
@@ -116,9 +114,7 @@ $allStoriesList.on('click', function(event){
     currentUser.deleteStory(storyId);
   }
   if (event.target.classList.contains('fa-pencil-alt')){
-    console.log('edit click registered');
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
-    console.log(storyId);
     editStoryForm(storyId);
   }
 });
@@ -251,10 +247,19 @@ $(window).scroll(infiniteScroll);
 
 async function infiniteScroll(){
   if ($(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
-    console.log('entering infiniteScroll');
     offsetCounter = offsetCounter + 25;
     const newStories = await StoryList.getMoreStories();
-    console.log(newStories);
     putMoreStoriesOnPage(newStories);
   }
 }
+
+function hideForm(event){
+  if (event.target.parentElement.id === "story-form"){
+    $newStoryForm.hide();
+  }
+  if (event.target.parentElement.id === "story-edit"){
+    $editStoryForm.hide();
+  }
+}
+
+$close.on('click', hideForm);
