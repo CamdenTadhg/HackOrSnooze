@@ -4,6 +4,7 @@
 let storyList;
 let favoritesList;
 let myStoriesList;
+let offsetCounter = 0;
 
 /** Get and show stories when site first loads. */
 
@@ -69,6 +70,15 @@ function putStoriesOnPage() {
     $allStoriesList.append($story);
   }
   $allStoriesList.show();
+}
+
+//appends additional stories from infinite scroll function
+function putMoreStoriesOnPage(newStories) {
+  console.log('entering putMoreStoriesOnPage');
+  for (let story of newStories.stories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
 }
 
 //using the submit form to submit a new story. 
@@ -236,3 +246,15 @@ async function submitEditForm(event){
 }
 
 $editStoryForm.on("submit", submitEditForm);
+
+$(window).scroll(infiniteScroll);
+
+async function infiniteScroll(){
+  if ($(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
+    console.log('entering infiniteScroll');
+    offsetCounter = offsetCounter + 25;
+    const newStories = await StoryList.getMoreStories();
+    console.log(newStories);
+    putMoreStoriesOnPage(newStories);
+  }
+}

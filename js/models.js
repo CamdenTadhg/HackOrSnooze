@@ -70,6 +70,16 @@ class StoryList {
     return new StoryList(stories);
   }
 
+  static async getMoreStories() {
+    console.log('entering getMoreStories')
+    const response = await axios({
+      url: `${BASE_URL}/stories?skip=${offsetCounter}`,
+      method: "GET"
+    })
+    const stories = response.data.stories.map(story => new Story(story));
+    return new StoryList(stories);
+  }
+
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
    * - obj of {title, author, url}

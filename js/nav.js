@@ -10,6 +10,7 @@ function navAllStories(evt) {
   hidePageComponents();
   StoryList.getStories();
   putStoriesOnPage();
+  offsetCounter = 0;
 }
 
 $body.on("click", "#nav-all", navAllStories);
