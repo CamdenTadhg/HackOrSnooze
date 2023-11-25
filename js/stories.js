@@ -26,6 +26,7 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   const hostName = story.getHostName();
+  const timeSince = story.calculateTime();
   const star = getStar(story);
   return $(`
   <li id="${story.storyId}">
@@ -38,6 +39,7 @@ function generateStoryMarkup(story) {
     <small class="story-hostname">(${hostName})</small>
     <span class="story-author">by ${story.author}</span>
     <span class="story-user">posted by ${story.username}</span>
+    <small class="time-since">(${timeSince})</small>
     </div>
     </container>
     <hr>
@@ -94,11 +96,12 @@ async function submitNewStory(event) {
   $("#story-title").val('');
   $("#story-url").val('');
   $newStoryForm.hide();
+  offsetCounter = 0;
 }
 
 $newStoryForm.on("submit", submitNewStory);
 
-//use event delegation to add an event listener for favorites & deleting
+//use event delegation to add event listeners for all story list functionality
 $allStoriesList.on('click', function(event){
   if(currentUser === undefined) {
     return;
@@ -120,7 +123,6 @@ $allStoriesList.on('click', function(event){
 });
 
 function addFavorite(event){
-  console.log('entering addFavorite');
   //get storyId from parent
   const storyId = event.target.parentElement.parentElement.parentElement.id;
   //change open star to solid star
@@ -151,6 +153,7 @@ function removeFavorite(event){
 
 function generateFavoritesMarkup(story){
   const hostName = story.getHostName();
+  const timeSince = story.calculateTime();
   return $(`
   <li id="${story.storyId}">
     <container class="story-container">
@@ -162,6 +165,7 @@ function generateFavoritesMarkup(story){
     <small class="story-hostname">(${hostName})</small>
     <span class="story-author">by ${story.author}</span>
     <span class="story-user">posted by ${story.username}</span>
+    <small class="time-since">(${timeSince})</small>
     </div>
     </container>
     <hr>
@@ -171,6 +175,7 @@ function generateFavoritesMarkup(story){
 
 function generateMyStoriesMarkup(story){
   const hostName = story.getHostName();
+  const timeSince = story.calculateTime();
   const star = getStar(story);
   return $(`
     <li id="${story.storyId}">
@@ -187,6 +192,7 @@ function generateMyStoriesMarkup(story){
       <small class="story-hostname">(${hostName})</small>
       <span class="story-author">by ${story.author}</span>
       <span class="story-user">posted by ${story.username}</span>
+      <small class="time-since">(${timeSince})</small>
       </div>
       </container>
       <hr>
@@ -253,6 +259,7 @@ async function infiniteScroll(){
   }
 }
 
+//allow user to close submit form and edit form
 function hideForm(event){
   if (event.target.parentElement.id === "story-form"){
     $newStoryForm.hide();

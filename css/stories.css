@@ -37,9 +37,13 @@
 }
 
 .story-user {
-  display: block;
-  margin: 7px 0px;
+  display: inline-block;
   color: #0496FF;
+  cursor: pointer;
+}
+
+.story-hostname {
+  cursor: pointer;
 }
 
 .favorite, .delete, .edit {
@@ -62,4 +66,8 @@
 
 .two {
   grid-column: 2 / 2;
+}
+
+.time-since{
+  display: inline;
 }

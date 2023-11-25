@@ -70,13 +70,7 @@ async function start() {
 $(start);
 
 
-//6. allow closing submit form and edit form without filling them out
-  //add cancel button
-  //on click of cancel button, hide form
-//5. add time since post
-  //use post time to calculate time since post
-  //add time since post to story object
-  //add time since post to markup
+//5. bug: when I add a story, infinite scroll stops working
 //4. make the host name a link of stories from that host
   //when click on host name
   //save host name as a variable

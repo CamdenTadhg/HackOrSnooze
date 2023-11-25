@@ -33,8 +33,24 @@ class Story {
     }
     return hostname;
   }
-}
 
+//calculates time since posting
+  calculateTime(){
+    let postTime = new Date(this.createdAt);
+    let currentTime = new Date();
+    let timeElapsed = currentTime - postTime;
+    let hoursElapsed = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    if (hoursElapsed < 1) {
+      let minutesElapsed = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+      return `${minutesElapsed} minutes ago`;
+    } else if (hoursElapsed >= 24) {
+      let daysElapsed = Math.floor(timeElapsed / (1000 * 60 * 60 *24));
+      return `${daysElapsed} days ago`;
+    } else {
+      return `${hoursElapsed} hours ago`;
+    }
+  }
+}
 
 /******************************************************************************
  * List of Story instances: used by UI to show story lists in DOM.
@@ -240,7 +256,6 @@ class User {
 
   // Method to add an article to your favorites array
   async favorite(storyId){
-    console.log('entering favorite');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
       method: "POST", 
@@ -261,7 +276,6 @@ class User {
 
   //create instance of StoryList from favorites array
   async getFavorites(){
-    console.log('entering getFavorites');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "GET", 
@@ -318,6 +332,5 @@ class User {
       method: "PATCH",
       data: {token: this.loginToken, user: {name: this.name, password: password, username: this.username}}
     })
-    console.log(response);
   }
 }

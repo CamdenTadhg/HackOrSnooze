@@ -130,7 +130,6 @@ function fillUserProfile() {
 
 async function changeName() {
     //clicking on change links opens a text input to change and a button to submit
-  console.log('entering changeName')
   const $changeNameForm = $('<input id="change-name-form" type="text" placeholder="name"><button id="change-name-button">Change</button>')
   $profileName.append($changeNameForm);
   const $changeNameButton = $('#change-name-button');
@@ -146,7 +145,6 @@ async function changeName() {
 
 async function changePassword() {
     //clicking on change links opens a text input to change and a button to submit
-  console.log('entering changePassword')
   const $changePasswordForm = $('<input id="change-password-form" type="password" placeholder="password"><button id="change-password-button">Change</button>');
   $profilePassword.append($changePasswordForm);
   const $changePasswordButton = $('#change-password-button');
