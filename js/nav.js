@@ -61,8 +61,6 @@ $navMyStories.on("click", navMyStoriesClick);
 
 function navUserProfileClick(){
   //when the user clicks on the username, show a profile page
-  $allStoriesList.hide();
-  $userProfile.show();
   fillUserProfile();
 }
 

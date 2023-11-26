@@ -121,16 +121,19 @@ function updateUIOnUserLogin() {
 }
 
 function fillUserProfile() {
+  console.log('entering fillUserProfile');
   hidePageComponents();
   //fill user profile page with currentUser information
   $profileUsername.text('Username: ' + currentUser.username);
   $profileName.html('Name: ' + currentUser.name);
   const date = new Date(currentUser.createdAt)
   $profileCreated.text(`Account Created: ${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`);
+  $userProfile.show();
 }
 
 async function changeName() {
-    //clicking on change links opens a text input to change and a button to submit
+  console.log('entering changeName');
+  //clicking on change links opens a text input to change and a button to submit
   const $changeNameForm = $('<input id="change-name-form" type="text" placeholder="name"><button id="change-name-button">Change</button>')
   $profileName.append($changeNameForm);
   const $changeNameButton = $('#change-name-button');
@@ -145,7 +148,8 @@ async function changeName() {
 }
 
 async function changePassword() {
-    //clicking on change links opens a text input to change and a button to submit
+  console.log('entering changePassword');
+  //clicking on change links opens a text input to change and a button to submit
   const $changePasswordForm = $('<input id="change-password-form" type="password" placeholder="password"><button id="change-password-button">Change</button>');
   $profilePassword.append($changePasswordForm);
   const $changePasswordButton = $('#change-password-button');

@@ -78,9 +78,6 @@ async function start() {
 // Once the DOM is entirely loaded, begin the app
 $(start);
 
-//2. refactor code 
-  //remove favorites markup function
-  // condense put stories on page functions into one that takes in a list as a parameter
-  //combine two patch functions? 
-  // condense get stories into one function
-//1. readMe
+
+//2. readMe
+//1. remove console.logs

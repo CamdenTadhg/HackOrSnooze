@@ -318,19 +318,21 @@ class User {
 
 //method to edit user's name
   async patchName(name){
+    console.log('entering patchName');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "PATCH", 
-      data: {token: this.loginToken, user: {name: name, password: this.password, username: this.username}}
+      data: {token: this.loginToken, user: {name: name}}
     })
   }
 
 //method to edit user's password
   async patchPassword(password) {
+    console.log('entering patchPassword');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "PATCH",
-      data: {token: this.loginToken, user: {name: this.name, password: password, username: this.username}}
+      data: {token: this.loginToken, user: {password: password}}
     })
   }
 }
