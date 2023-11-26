@@ -101,11 +101,29 @@ async function submitNewStory(event) {
 
 $newStoryForm.on("submit", submitNewStory);
 
-//use event delegation to add event listeners for all story list functionality
+//use event delegation to add event listeners to story lists
 $allStoriesList.on('click', function(event){
   if(currentUser === undefined) {
     return;
   }
+  if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    addFavorite(event);
+  }
+  if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    removeFavorite(event);
+  }
+});
+
+$favoritesList.on('click', function(event){
+  if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    addFavorite(event);
+  }
+  if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    removeFavorite(event);
+  }
+})
+
+$myStoriesList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
     addFavorite(event);
   }
@@ -120,7 +138,7 @@ $allStoriesList.on('click', function(event){
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     editStoryForm(storyId);
   }
-});
+})
 
 function addFavorite(event){
   //get storyId from parent
@@ -141,14 +159,14 @@ function removeFavorite(event){
 }
 
   //display favoritesList instance
-  async function showFavorites(){
+async function showFavorites(){
   favoritesList = await currentUser.getFavorites();
-  $allStoriesList.empty();
+  hidePageComponents();
   for (let favorite of favoritesList.stories)  {
     const $story = generateFavoritesMarkup(favorite);
-    $allStoriesList.prepend($story);
+    $favoritesList.prepend($story);
   }
-  $allStoriesList.show();
+  $favoritesList.show();
 }
 
 function generateFavoritesMarkup(story){
@@ -202,12 +220,12 @@ function generateMyStoriesMarkup(story){
 
 async function showMyStories(){
   myStoriesList = await currentUser.getMyStories();
-  $allStoriesList.empty();
+  hidePageComponents();
   for (let story of myStoriesList.stories) {
     const $story = generateMyStoriesMarkup(story);
-    $allStoriesList.prepend($story);
+    $myStoriesList.prepend($story);
   }
-  $allStoriesList.show();
+  $myStoriesList.show();
 }
 
 let editStory 

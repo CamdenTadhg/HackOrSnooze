@@ -6,6 +6,8 @@ const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
+const $favoritesList = $("#favorites-list");
+const $myStoriesList = $("#my-stories-list");
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
@@ -42,6 +44,9 @@ function hidePageComponents() {
     $loginForm,
     $signupForm,
     $newStoryForm,
+    $favoritesList,
+    $myStoriesList,
+    $userProfile
   ];
   components.forEach(c => c.hide());
 }
@@ -70,19 +75,19 @@ async function start() {
 $(start);
 
 
-//5. bug: when I add a story, infinite scroll stops working
+//5. bug: first time I click on favorites or mystories, it infinite scrolls
+  //cludge solution is to mess with the offsetcounter
+  //better solution needed because the same thing is going to happen with the host name feature and the user name feature. 
 //4. make the host name a link of stories from that host
   //when click on host name
   //save host name as a variable
   //get stories with a higher associated limit
   //use if statement to only display stories with the correct host
-  //ensure infinite scroll continues process
 //3. clicking on user name gives you a list of the user's stories
   //when click user name
   //save user name as a variable
   //get stories with a higher associated limit
   //use if statement to only display stories with the correct host
-  //ensure infinite scroll continues process
 //2. style for mobile devices
-  //make home stories list appear like favorites and mystories lists
+  //make home stories list appear like favorites and mystories lists (or make a humburger menu if you can figure that out)
 //1. readMe
