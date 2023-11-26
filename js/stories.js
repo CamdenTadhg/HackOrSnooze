@@ -170,7 +170,7 @@ $hostNameList.on('click', function(event){
   if (event.target.classList.contains('story-hostname')){
     showHostNameList(event);
   }
-  if (event.target.classsList.contains('story-user')){
+  if (event.target.classList.contains('story-user')){
     showUsernameList(event);
   }
 })
@@ -185,7 +185,7 @@ $usernameList.on('click', function(event){
   if (event.target.classList.contains('story-hostname')){
     showHostNameList(event);
   }
-  if (event.target.classsList.contains('story-user')){
+  if (event.target.classList.contains('story-user')){
     showUsernameList(event);
   }
 })
