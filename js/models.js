@@ -100,6 +100,7 @@ class StoryList {
    */
 
   async addStory(user, {author, title, url}) {
+    console.log('entering addStory');
     //add story data to API
     const token = user.loginToken;
     const response = await axios({
@@ -111,7 +112,7 @@ class StoryList {
     const storyInstance = new Story(response.data.story);
     //add to story list
     mainStoryList.stories.unshift(storyInstance);
-    putStoriesOnPage(mainStoryList);
+    putStoriesOnPage(mainStoryList, $allStoriesList);
     //return new story instance
     return storyInstance;
   }
@@ -253,6 +254,8 @@ class User {
 
   // Method to add an article to your favorites array
   async favorite(storyId){
+    console.log('entering favorite');
+    console.log(storyId);
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
       method: "POST", 

@@ -78,8 +78,6 @@ async function start() {
 // Once the DOM is entirely loaded, begin the app
 $(start);
 
-//3. style for mobile devices
-  //make home stories list appear like favorites and mystories lists (or make a humburger menu if you can figure that out)
 //2. refactor code 
   //remove favorites markup function
   // condense put stories on page functions into one that takes in a list as a parameter

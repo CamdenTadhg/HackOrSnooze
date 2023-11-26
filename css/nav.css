@@ -28,3 +28,11 @@ nav {
   padding: 0px 0px 0px 10px;
   text-align: center;
 }
+
+/* responsive queries for tightening things up for mobile. */
+
+@media screen and (max-width: 576px) {
+  nav {
+    padding: 5px 5px;
+  }
+}

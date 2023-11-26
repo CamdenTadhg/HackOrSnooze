@@ -9,7 +9,7 @@
 async function navAllStories(evt) {
   hidePageComponents();
   mainStoryList = await StoryList.getStories();
-  putStoriesOnPage(mainStoryList);
+  putStoriesOnPage(mainStoryList, $allStoriesList);
   offsetCounter = 0;
 }
 

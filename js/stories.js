@@ -9,10 +9,11 @@ let offsetCounter = 0;
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
+  console.log('entering getAndShowStoriesOnStart');
   mainStoryList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
 
-  putStoriesOnPage(mainStoryList);
+  putStoriesOnPage(mainStoryList, $allStoriesList);
 }
 
 
@@ -25,13 +26,16 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
+  console.log('entering generateStoryMarkup');
   const hostName = story.getHostName();
   const timeSince = story.calculateTime();
   const star = getStar(story);
   return $(`
   <li id="${story.storyId}">
     <container class="story-container">
-    ${star}
+    <div class="one">
+      ${star}
+    </div>
     <div class="two">
     <a href="${story.url}" target="a_blank" class="story-link">
       ${story.title}
@@ -49,13 +53,14 @@ function generateStoryMarkup(story) {
 
 
 function getStar(story) {
+  console.log('entering getStar');
   if (currentUser === undefined){
-    return '<span class="favorite one"><i class="far fa-star"></i></span>';
+    return '<span class="favorite"><i class="far fa-star"></i></span>';
   }
   else if (currentUser.favorites.filter(e => e.storyId === story.storyId).length > 0 ) {
-    return "<span class='favorite one'><i class='fas fa-star'></i></span>";
+    return "<span class='favorite'><i class='fas fa-star'></i></span>";
   } else {
-    return '<span class="favorite one"><i class="far fa-star"></i></span>';
+    return '<span class="favorite"><i class="far fa-star"></i></span>';
   }
 }
 
@@ -63,43 +68,33 @@ function getStar(story) {
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-function putStoriesOnPage(storyList) {
-  $allStoriesList.empty();
-
+function putStoriesOnPage(storyList, targetList) {
+  hidePageComponents();
+  console.log('entering putStoriesOnPage');
+  console.log('target list is');
+  console.log(targetList);
+  console.log('storyList is');
+  console.log(storyList);
+  targetList.empty();
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
+    targetList.append($story);
   }
-  $allStoriesList.show();
+  targetList.show();
 }
 
-//appends additional stories from infinite scroll function
-function putMoreStoriesOnPage(newStories) {
-  for (let story of newStories.stories) {
-    const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
-  }
-}
-
-function putHostNameStoriesOnPage(storyList) {
+//appends additional stories without clearing the existing story list
+function putMoreStoriesOnPage(storyList, targetList) {
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
-    $hostNameList.append($story);
+    targetList.append($story);
   }
-  $hostNameList.show();
-}
-
-function putUsernameStoriesOnPage(storyList) {
-  for (let story of storyList.stories) {
-    const $story = generateStoryMarkup(story);
-    $usernameList.append($story);
-  }
-  $usernameList.show();
 }
 
 //using the submit form to submit a new story. 
 async function submitNewStory(event) {
+  console.log('entering submitNewStory');
   event.preventDefault();
   const author = $("#story-author").val();
   const title = $("#story-title").val();
@@ -107,7 +102,7 @@ async function submitNewStory(event) {
   const username = currentUser.username
   const newStory = {author: author, title: title, url: url, username: username};
   await mainStoryList.addStory(currentUser, newStory);
-  putStoriesOnPage(mainStoryList);
+  putStoriesOnPage(mainStoryList, $allStoriesList);
   $("#story-author").val('');
   $("#story-title").val('');
   $("#story-url").val('');
@@ -123,91 +118,114 @@ $allStoriesList.on('click', function(event){
     return;
   }
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
-    console.log('hostname click registered');
+    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classList.contains('story-user')){
+    console.log('entering username click');
     showUsernameList(event);
   }
 });
 
 $favoritesList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
+    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classList.contains('story-user')){
+    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 $myStoriesList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('fa-trash-alt')){
+    console.log('entering trash can click');
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     currentUser.deleteStory(storyId);
   }
   if (event.target.classList.contains('fa-pencil-alt')){
+    console.log('entering edit click');
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     editStoryForm(storyId);
   }
   if (event.target.classList.contains('story-hostname')){
+    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classList.contains('story-user')){
+    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 $hostNameList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
+    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classsList.contains('story-user')){
+    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 $usernameList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
+    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classsList.contains('story-user')){
+    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 function addFavorite(event){
+  console.log('entering addFavorite');
   //get storyId from parent
-  const storyId = event.target.parentElement.parentElement.parentElement.id;
+  const storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+  console.log('storyId = ' + storyId);
   //change open star to solid star
   event.target.parentElement.innerHTML = '<i class="fas fa-star"></i>'
   //run currentUser.favorite
@@ -215,8 +233,9 @@ function addFavorite(event){
 }
 
 function removeFavorite(event){
+  console.log('entering removeFavorite');
   //get storyId from parent
-  const storyId = event.target.parentElement.parentElement.parentElement.id;
+  const storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     //change solid star to open star
   event.target.parentElement.innerHTML = '<i class="far fa-star"></i>'
   //run currentUser.unfavorite
@@ -225,39 +244,19 @@ function removeFavorite(event){
 
   //display favoritesList instance
 async function showFavorites(){
+  console.log('entering showFavorites');
   $favoritesList.empty();
   favoritesList = await currentUser.getFavorites();
   hidePageComponents();
   for (let favorite of favoritesList.stories)  {
-    const $story = generateFavoritesMarkup(favorite);
+    const $story = generateStoryMarkup(favorite);
     $favoritesList.prepend($story);
   }
   $favoritesList.show();
 }
 
-function generateFavoritesMarkup(story){
-  const hostName = story.getHostName();
-  const timeSince = story.calculateTime();
-  return $(`
-  <li id="${story.storyId}">
-    <container class="story-container">
-    <span class="favorite one"><i class="fas fa-star"></i></span>
-    <div class="two">
-    <a href="${story.url}" target="a_blank" class="story-link">
-      ${story.title}
-    </a>
-    <small class="story-hostname">(${hostName})</small>
-    <span class="story-author">by ${story.author}</span>
-    <span class="story-user">posted by ${story.username}</span>
-    <small class="time-since">(${timeSince})</small>
-    </div>
-    </container>
-    <hr>
-  </li>
-`);
-}
-
 function generateMyStoriesMarkup(story){
+  console.log('entering generateMyStoriesMarkup');
   const hostName = story.getHostName();
   const timeSince = story.calculateTime();
   const star = getStar(story);
@@ -285,6 +284,7 @@ function generateMyStoriesMarkup(story){
 }
 
 async function showMyStories(){
+  console.log('entering showMyStories');
   $myStoriesList.empty();
   myStoriesList = await currentUser.getMyStories();
   hidePageComponents();
@@ -297,6 +297,7 @@ async function showMyStories(){
 
 
 async function showHostNameList(event){
+  console.log('entering showHostNameList');
   hidePageComponents();
   //save host name to a variable
   let hostNameVar = event.target.innerText;
@@ -314,7 +315,7 @@ async function showHostNameList(event){
   searchList.stories = searchedStories;
   //display the filtered stories
   $hostNameList.empty();
-  putHostNameStoriesOnPage(searchList);
+  putStoriesOnPage(searchList, $hostNameList);
   $hostNameList.show();
   offsetCounter = 0;
   //start a while loop to filter remaining stories
@@ -329,12 +330,13 @@ async function showHostNameList(event){
       }
     }
     searchList.stories = searchedStories;
-    putHostNameStoriesOnPage(searchList);
+    putMoreStoriesOnPage(searchList, $hostNameList);
   }
   offsetCounter = 0;
 }
 
 async function showUsernameList(event){
+  console.log('entering showUsernameList');
   hidePageComponents();
   //save username to a variable
   let usernameVar = event.target.innerText;
@@ -352,7 +354,7 @@ async function showUsernameList(event){
   searchList.stories = searchedStories;
   //display the filtered stories
   $usernameList.empty();
-  putUsernameStoriesOnPage(searchList);
+  putStoriesOnPage(searchList, $usernameList);
   $usernameList.show();
   offsetCounter = 0;
   //start a while loop to filter remaining stories
@@ -367,7 +369,7 @@ async function showUsernameList(event){
       }
     }
     searchList.stories = searchedStories;
-    putUsernameStoriesOnPage(searchList);
+    putMoreStoriesOnPage(searchList, $usernameList);
   }
   offsetCounter = 0;
 }
@@ -375,6 +377,7 @@ async function showUsernameList(event){
 let editStory 
 
 async function editStoryForm(storyId){
+  console.log('entering editStoryForm');
   //open an edit form
   $editStoryForm.show();
   //pull the story from the database
@@ -390,6 +393,7 @@ async function editStoryForm(storyId){
 }
 
 async function submitEditForm(event){
+  console.log('entering submitEditForm');
   //allow user to edit the data
   event.preventDefault();
   const author = $('#edit-author').val();
@@ -414,10 +418,11 @@ $editStoryForm.on("submit", submitEditForm);
 $(window).scroll(infiniteScroll);
 
 async function infiniteScroll(){
+  console.log('entering infiniteScroll');
   if ($(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
     offsetCounter = offsetCounter + 25;
     const newStories = await StoryList.getMoreStories();
-    putMoreStoriesOnPage(newStories);
+    putMoreStoriesOnPage(newStories, $allStoriesList);
   }
 }
 
