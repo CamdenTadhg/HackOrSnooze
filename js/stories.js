@@ -90,6 +90,14 @@ function putHostNameStoriesOnPage(storyList) {
   $hostNameList.show();
 }
 
+function putUsernameStoriesOnPage(storyList) {
+  for (let story of storyList.stories) {
+    const $story = generateStoryMarkup(story);
+    $usernameList.append($story);
+  }
+  $usernameList.show();
+}
+
 //using the submit form to submit a new story. 
 async function submitNewStory(event) {
   event.preventDefault();
@@ -124,9 +132,9 @@ $allStoriesList.on('click', function(event){
     console.log('hostname click registered');
     showHostNameList(event);
   }
-  // if (event.target.classsList.contains('story-user')){
-  //   showUsernameList(event);
-  // }
+  if (event.target.classList.contains('story-user')){
+    showUsernameList(event);
+  }
 });
 
 $favoritesList.on('click', function(event){
@@ -139,9 +147,9 @@ $favoritesList.on('click', function(event){
   if (event.target.classList.contains('story-hostname')){
     showHostNameList(event);
   }
-  // if (event.target.classList.contains('story-user')){
-  //   showUsernameList(event);
-  // }
+  if (event.target.classList.contains('story-user')){
+    showUsernameList(event);
+  }
 })
 
 $myStoriesList.on('click', function(event){
@@ -162,9 +170,9 @@ $myStoriesList.on('click', function(event){
   if (event.target.classList.contains('story-hostname')){
     showHostNameList(event);
   }
-  // if (event.target.classsList.contains('story-user')){
-  //   showUsernameList(event);
-  // }
+  if (event.target.classList.contains('story-user')){
+    showUsernameList(event);
+  }
 })
 
 $hostNameList.on('click', function(event){
@@ -177,9 +185,9 @@ $hostNameList.on('click', function(event){
   if (event.target.classList.contains('story-hostname')){
     showHostNameList(event);
   }
-  // if (event.target.classsList.contains('story-user')){
-  //   showUsernameList(event);
-  // }
+  if (event.target.classsList.contains('story-user')){
+    showUsernameList(event);
+  }
 })
 
 $usernameList.on('click', function(event){
@@ -326,9 +334,43 @@ async function showHostNameList(event){
   offsetCounter = 0;
 }
 
-// async function showUsernameList(event){
-
-// }
+async function showUsernameList(event){
+  hidePageComponents();
+  //save username to a variable
+  let usernameVar = event.target.innerText;
+  usernameVar = usernameVar.slice(10);
+  //get a list of stories
+  let searchableList = await StoryList.getStories();
+  let searchedStories = [];
+  let searchList = {};
+  //filter stories by the selected username
+  for (let story of searchableList.stories){
+    if (usernameVar === story.username){
+      searchedStories.push(story);
+    }
+  }
+  searchList.stories = searchedStories;
+  //display the filtered stories
+  $usernameList.empty();
+  putUsernameStoriesOnPage(searchList);
+  $usernameList.show();
+  offsetCounter = 0;
+  //start a while loop to filter remaining stories
+  while (searchableList.stories.length > 0){
+    offsetCounter += 25;
+    searchableList = await StoryList.getMoreStories();
+    searchedStories = [];
+    searchList = {};
+    for (let story of searchableList.stories){
+      if (usernameVar === story.username) {
+        searchedStories.push(story);
+      }
+    }
+    searchList.stories = searchedStories;
+    putUsernameStoriesOnPage(searchList);
+  }
+  offsetCounter = 0;
+}
 
 let editStory 
 

@@ -78,16 +78,11 @@ async function start() {
 // Once the DOM is entirely loaded, begin the app
 $(start);
 
-//5. bug with favorites and mystories getting duplicated
-//4. clicking on user name gives you a list of the user's stories
-  //when click user name
-  //save user name as a variable
-  //get stories
-  //use if statement to only display stories with the correct host
-  //make infinite scroll work
 //3. style for mobile devices
   //make home stories list appear like favorites and mystories lists (or make a humburger menu if you can figure that out)
 //2. refactor code 
   //remove favorites markup function
   // condense put stories on page functions into one that takes in a list as a parameter
+  //combine two patch functions? 
+  // condense get stories into one function
 //1. readMe
