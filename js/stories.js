@@ -9,7 +9,6 @@ let offsetCounter = 0;
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
-  console.log('entering getAndShowStoriesOnStart');
   mainStoryList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
 
@@ -26,7 +25,6 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  console.log('entering generateStoryMarkup');
   const hostName = story.getHostName();
   const timeSince = story.calculateTime();
   const star = getStar(story);
@@ -53,7 +51,6 @@ function generateStoryMarkup(story) {
 
 
 function getStar(story) {
-  console.log('entering getStar');
   if (currentUser === undefined){
     return '<span class="favorite"><i class="far fa-star"></i></span>';
   }
@@ -70,11 +67,6 @@ function getStar(story) {
 
 function putStoriesOnPage(storyList, targetList) {
   hidePageComponents();
-  console.log('entering putStoriesOnPage');
-  console.log('target list is');
-  console.log(targetList);
-  console.log('storyList is');
-  console.log(storyList);
   targetList.empty();
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
@@ -94,7 +86,6 @@ function putMoreStoriesOnPage(storyList, targetList) {
 
 //using the submit form to submit a new story. 
 async function submitNewStory(event) {
-  console.log('entering submitNewStory');
   event.preventDefault();
   const author = $("#story-author").val();
   const title = $("#story-title").val();
@@ -118,114 +109,90 @@ $allStoriesList.on('click', function(event){
     return;
   }
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
-    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classList.contains('story-user')){
-    console.log('entering username click');
     showUsernameList(event);
   }
 });
 
 $favoritesList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
-    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classList.contains('story-user')){
-    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 $myStoriesList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('fa-trash-alt')){
-    console.log('entering trash can click');
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     currentUser.deleteStory(storyId);
   }
   if (event.target.classList.contains('fa-pencil-alt')){
-    console.log('entering edit click');
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     editStoryForm(storyId);
   }
   if (event.target.classList.contains('story-hostname')){
-    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classList.contains('story-user')){
-    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 $hostNameList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
-    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classsList.contains('story-user')){
-    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 $usernameList.on('click', function(event){
   if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     addFavorite(event);
   }
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
-    console.log('entering favorite click');
     removeFavorite(event);
   }
   if (event.target.classList.contains('story-hostname')){
-    console.log('entering hostname click');
     showHostNameList(event);
   }
   if (event.target.classsList.contains('story-user')){
-    console.log('entering username click');
     showUsernameList(event);
   }
 })
 
 function addFavorite(event){
-  console.log('entering addFavorite');
   //get storyId from parent
   const storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
-  console.log('storyId = ' + storyId);
   //change open star to solid star
   event.target.parentElement.innerHTML = '<i class="fas fa-star"></i>'
   //run currentUser.favorite
@@ -233,7 +200,6 @@ function addFavorite(event){
 }
 
 function removeFavorite(event){
-  console.log('entering removeFavorite');
   //get storyId from parent
   const storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     //change solid star to open star
@@ -244,7 +210,6 @@ function removeFavorite(event){
 
   //display favoritesList instance
 async function showFavorites(){
-  console.log('entering showFavorites');
   $favoritesList.empty();
   favoritesList = await currentUser.getFavorites();
   hidePageComponents();
@@ -256,7 +221,6 @@ async function showFavorites(){
 }
 
 function generateMyStoriesMarkup(story){
-  console.log('entering generateMyStoriesMarkup');
   const hostName = story.getHostName();
   const timeSince = story.calculateTime();
   const star = getStar(story);
@@ -284,7 +248,6 @@ function generateMyStoriesMarkup(story){
 }
 
 async function showMyStories(){
-  console.log('entering showMyStories');
   $myStoriesList.empty();
   myStoriesList = await currentUser.getMyStories();
   hidePageComponents();
@@ -297,7 +260,6 @@ async function showMyStories(){
 
 
 async function showHostNameList(event){
-  console.log('entering showHostNameList');
   hidePageComponents();
   //save host name to a variable
   let hostNameVar = event.target.innerText;
@@ -336,7 +298,6 @@ async function showHostNameList(event){
 }
 
 async function showUsernameList(event){
-  console.log('entering showUsernameList');
   hidePageComponents();
   //save username to a variable
   let usernameVar = event.target.innerText;
@@ -377,7 +338,6 @@ async function showUsernameList(event){
 let editStory 
 
 async function editStoryForm(storyId){
-  console.log('entering editStoryForm');
   //open an edit form
   $editStoryForm.show();
   //pull the story from the database
@@ -393,7 +353,6 @@ async function editStoryForm(storyId){
 }
 
 async function submitEditForm(event){
-  console.log('entering submitEditForm');
   //allow user to edit the data
   event.preventDefault();
   const author = $('#edit-author').val();
@@ -418,7 +377,6 @@ $editStoryForm.on("submit", submitEditForm);
 $(window).scroll(infiniteScroll);
 
 async function infiniteScroll(){
-  console.log('entering infiniteScroll');
   if ($(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
     offsetCounter = offsetCounter + 25;
     const newStories = await StoryList.getMoreStories();

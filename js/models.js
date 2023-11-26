@@ -100,7 +100,6 @@ class StoryList {
    */
 
   async addStory(user, {author, title, url}) {
-    console.log('entering addStory');
     //add story data to API
     const token = user.loginToken;
     const response = await axios({
@@ -254,8 +253,6 @@ class User {
 
   // Method to add an article to your favorites array
   async favorite(storyId){
-    console.log('entering favorite');
-    console.log(storyId);
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
       method: "POST", 
@@ -318,7 +315,6 @@ class User {
 
 //method to edit user's name
   async patchName(name){
-    console.log('entering patchName');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "PATCH", 
@@ -328,7 +324,6 @@ class User {
 
 //method to edit user's password
   async patchPassword(password) {
-    console.log('entering patchPassword');
     const response = await axios ({
       url: `${BASE_URL}/users/${this.username}`,
       method: "PATCH",
