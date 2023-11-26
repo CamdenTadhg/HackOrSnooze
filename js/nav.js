@@ -6,10 +6,10 @@
 
 /** Show main list of all stories when click site name */
 
-function navAllStories(evt) {
+async function navAllStories(evt) {
   hidePageComponents();
-  StoryList.getStories();
-  putStoriesOnPage();
+  mainStoryList = await StoryList.getStories();
+  putStoriesOnPage(mainStoryList);
   offsetCounter = 0;
 }
 

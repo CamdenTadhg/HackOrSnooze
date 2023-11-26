@@ -1,7 +1,7 @@
 "use strict";
 
 // This is the global list of the stories, an instance of StoryList
-let storyList;
+let mainStoryList;
 let favoritesList;
 let myStoriesList;
 let offsetCounter = 0;
@@ -9,10 +9,10 @@ let offsetCounter = 0;
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
-  storyList = await StoryList.getStories();
+  mainStoryList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
 
-  putStoriesOnPage();
+  putStoriesOnPage(mainStoryList);
 }
 
 
@@ -63,7 +63,7 @@ function getStar(story) {
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-function putStoriesOnPage() {
+function putStoriesOnPage(storyList) {
   $allStoriesList.empty();
 
   // loop through all of our stories and generate HTML for them
@@ -82,6 +82,14 @@ function putMoreStoriesOnPage(newStories) {
   }
 }
 
+function putHostNameStoriesOnPage(storyList) {
+  for (let story of storyList.stories) {
+    const $story = generateStoryMarkup(story);
+    $hostNameList.append($story);
+  }
+  $hostNameList.show();
+}
+
 //using the submit form to submit a new story. 
 async function submitNewStory(event) {
   event.preventDefault();
@@ -90,8 +98,8 @@ async function submitNewStory(event) {
   const url = $("#story-url").val();
   const username = currentUser.username
   const newStory = {author: author, title: title, url: url, username: username};
-  await storyList.addStory(currentUser, newStory);
-  putStoriesOnPage();
+  await mainStoryList.addStory(currentUser, newStory);
+  putStoriesOnPage(mainStoryList);
   $("#story-author").val('');
   $("#story-title").val('');
   $("#story-url").val('');
@@ -112,6 +120,13 @@ $allStoriesList.on('click', function(event){
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
     removeFavorite(event);
   }
+  if (event.target.classList.contains('story-hostname')){
+    console.log('hostname click registered');
+    showHostNameList(event);
+  }
+  // if (event.target.classsList.contains('story-user')){
+  //   showUsernameList(event);
+  // }
 });
 
 $favoritesList.on('click', function(event){
@@ -121,6 +136,12 @@ $favoritesList.on('click', function(event){
   if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
     removeFavorite(event);
   }
+  if (event.target.classList.contains('story-hostname')){
+    showHostNameList(event);
+  }
+  // if (event.target.classList.contains('story-user')){
+  //   showUsernameList(event);
+  // }
 })
 
 $myStoriesList.on('click', function(event){
@@ -137,6 +158,42 @@ $myStoriesList.on('click', function(event){
   if (event.target.classList.contains('fa-pencil-alt')){
     let storyId = event.target.parentElement.parentElement.parentElement.parentElement.id;
     editStoryForm(storyId);
+  }
+  if (event.target.classList.contains('story-hostname')){
+    showHostNameList(event);
+  }
+  // if (event.target.classsList.contains('story-user')){
+  //   showUsernameList(event);
+  // }
+})
+
+$hostNameList.on('click', function(event){
+  if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    addFavorite(event);
+  }
+  if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    removeFavorite(event);
+  }
+  if (event.target.classList.contains('story-hostname')){
+    showHostNameList(event);
+  }
+  // if (event.target.classsList.contains('story-user')){
+  //   showUsernameList(event);
+  // }
+})
+
+$usernameList.on('click', function(event){
+  if(event.target.classList.contains('far') && event.target.classList.contains('fa-star')){
+    addFavorite(event);
+  }
+  if (event.target.classList.contains('fas') && event.target.classList.contains('fa-star')){
+    removeFavorite(event);
+  }
+  if (event.target.classList.contains('story-hostname')){
+    showHostNameList(event);
+  }
+  if (event.target.classsList.contains('story-user')){
+    showUsernameList(event);
   }
 })
 
@@ -160,6 +217,7 @@ function removeFavorite(event){
 
   //display favoritesList instance
 async function showFavorites(){
+  $favoritesList.empty();
   favoritesList = await currentUser.getFavorites();
   hidePageComponents();
   for (let favorite of favoritesList.stories)  {
@@ -219,6 +277,7 @@ function generateMyStoriesMarkup(story){
 }
 
 async function showMyStories(){
+  $myStoriesList.empty();
   myStoriesList = await currentUser.getMyStories();
   hidePageComponents();
   for (let story of myStoriesList.stories) {
@@ -227,6 +286,49 @@ async function showMyStories(){
   }
   $myStoriesList.show();
 }
+
+
+async function showHostNameList(event){
+  hidePageComponents();
+  //save host name to a variable
+  let hostNameVar = event.target.innerText;
+  hostNameVar = hostNameVar.slice(1, -1);
+  //get a list of stories
+  let searchableList = await StoryList.getStories();
+  let searchedStories = [];
+  let searchList = {};
+  //filter stories by the selected hostname
+  for (let story of searchableList.stories){
+    if (hostNameVar === story.getHostName()){
+      searchedStories.push(story);
+    }
+  }
+  searchList.stories = searchedStories;
+  //display the filtered stories
+  $hostNameList.empty();
+  putHostNameStoriesOnPage(searchList);
+  $hostNameList.show();
+  offsetCounter = 0;
+  //start a while loop to filter remaining stories
+  while (searchableList.stories.length > 0){
+    offsetCounter += 25;
+    searchableList = await StoryList.getMoreStories();
+    searchedStories = [];
+    searchList = {};
+    for (let story of searchableList.stories){
+      if(hostNameVar === story.getHostName()) {
+        searchedStories.push(story);
+      }
+    }
+    searchList.stories = searchedStories;
+    putHostNameStoriesOnPage(searchList);
+  }
+  offsetCounter = 0;
+}
+
+// async function showUsernameList(event){
+
+// }
 
 let editStory 
 
@@ -261,8 +363,8 @@ async function submitEditForm(event){
   $('#edit-url').val('');
   $editStoryForm.hide();
   //my stories list changes to updated information
-  storyList = await StoryList.getStories();
-  showMyStories();
+  myStoriesList = await StoryList.getStories();
+  showMyStories(myStoriesList);
 }
 
 $editStoryForm.on("submit", submitEditForm);

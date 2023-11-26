@@ -8,6 +8,8 @@ const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
 const $favoritesList = $("#favorites-list");
 const $myStoriesList = $("#my-stories-list");
+const $hostNameList = $('#host-name-list');
+const $usernameList = $('#username-list');
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
@@ -46,7 +48,9 @@ function hidePageComponents() {
     $newStoryForm,
     $favoritesList,
     $myStoriesList,
-    $userProfile
+    $userProfile,
+    $hostNameList,
+    $usernameList
   ];
   components.forEach(c => c.hide());
 }
@@ -74,20 +78,16 @@ async function start() {
 // Once the DOM is entirely loaded, begin the app
 $(start);
 
-
-//5. bug: first time I click on favorites or mystories, it infinite scrolls
-  //cludge solution is to mess with the offsetcounter
-  //better solution needed because the same thing is going to happen with the host name feature and the user name feature. 
-//4. make the host name a link of stories from that host
-  //when click on host name
-  //save host name as a variable
-  //get stories with a higher associated limit
-  //use if statement to only display stories with the correct host
-//3. clicking on user name gives you a list of the user's stories
+//5. bug with favorites and mystories getting duplicated
+//4. clicking on user name gives you a list of the user's stories
   //when click user name
   //save user name as a variable
-  //get stories with a higher associated limit
+  //get stories
   //use if statement to only display stories with the correct host
-//2. style for mobile devices
+  //make infinite scroll work
+//3. style for mobile devices
   //make home stories list appear like favorites and mystories lists (or make a humburger menu if you can figure that out)
+//2. refactor code 
+  //remove favorites markup function
+  // condense put stories on page functions into one that takes in a list as a parameter
 //1. readMe

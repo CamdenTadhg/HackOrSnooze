@@ -121,6 +121,7 @@ function updateUIOnUserLogin() {
 }
 
 function fillUserProfile() {
+  hidePageComponents();
   //fill user profile page with currentUser information
   $profileUsername.text('Username: ' + currentUser.username);
   $profileName.html('Name: ' + currentUser.name);
